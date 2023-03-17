@@ -80,10 +80,10 @@ def app():
             elif widget_select == "Widget 4":
                 widget4_output = output
 
-    widget1.write(widget1_output)
-    widget2.write(widget2_output)
-    widget3.write(widget3_output)
-    widget4.write(widget4_output)
+            widget1.write(widget1_output)
+            widget2.write(widget2_output)
+            widget3.write(widget3_output)
+            widget4.write(widget4_output)
 
     # Add a button to generate the PDF file
     if st.button("Generate PDF"):
