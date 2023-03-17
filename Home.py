@@ -15,16 +15,17 @@ if "widget_outputs" not in st.session_state:
         "Widget 4": "",
     }
 
-def generate_pdf(text):
+def generate_pdf(sections):
     # Create a new PDF document
     doc = fitz.open()
 
-    # Add a new page to the document
-    page = doc.new_page()
-    p = fitz.Point(50, 72)
+    # Add a new page for each section
+    for section in sections:
+        page = doc.new_page()
 
-    # Draw some text on the page
-    page.insert_text(p, text)
+        # Draw the section text on the page
+        p = fitz.Point(50, 72)
+        page.insert_text(p, section)
 
     # Save the document to a buffer
     buffer = io.BytesIO()
@@ -37,6 +38,7 @@ def generate_pdf(text):
     buffer.seek(0)
 
     return buffer
+
 
 
 def generate_text(input):
@@ -82,6 +84,14 @@ def app():
             widget2.write(st.session_state.widget_outputs["Widget 2"])
             widget3.write(st.session_state.widget_outputs["Widget 3"])
             widget4.write(st.session_state.widget_outputs["Widget 4"])
+
+    # Collect the outputs of all the widgets into a list
+    widget_outputs = [
+        st.session_state.widget_outputs["Widget 1"],
+        st.session_state.widget_outputs["Widget 2"],
+        st.session_state.widget_outputs["Widget 3"],
+        st.session_state.widget_outputs["Widget 4"],
+    ]
 
     # Add a button to generate the PDF file
     if st.button("Generate PDF"):
