@@ -6,7 +6,6 @@ import os
 
 openai.api_key = os.getenv("API_KEY")
 
-
 def generate_pdf(text):
     # Create a new PDF document
     doc = fitz.open()
@@ -30,7 +29,6 @@ def generate_pdf(text):
 
     return buffer
 
-
 def generate_text(input):
     response = openai.Completion.create(
         model="text-davinci-003",
@@ -42,7 +40,6 @@ def generate_text(input):
         presence_penalty=0
     )
     return response.choices[0].text
-
 
 def app():
     # Set the app title
@@ -57,7 +54,19 @@ def app():
     }
 
     # Define the widget selection drop-down
-    widget_select = st.sidebar.multiselect("Select a widget", list(expanders.keys()))
+    widget_select = st.sidebar.selectbox("Select a widget", list(expanders.keys()))
+
+    # Define a dictionary to store the widget contents
+    widget_contents = {
+        "Widget 1": None,
+        "Widget 2": None,
+        "Widget 3": None,
+        "Widget 4": None
+    }
+
+    # Load the contents of the selected widget
+    if widget_select in widget_contents and widget_contents[widget_select] is not None:
+        expanders[widget_select].write(widget_contents[widget_select])
 
     # Add a button to generate the PDF file
     if st.button("Generate PDF"):
@@ -83,16 +92,8 @@ def app():
             output = generate_text(query)
             expanders[widget_select].write(output)
 
-            # Store the output in a variable for future use
-            if widget_select == "Widget 1":
-                widget1_output = output
-            elif widget_select == "Widget 2":
-                widget2_output = output
-            elif widget_select == "Widget 3":
-                widget3_output = output
-            elif widget_select == "Widget 4":
-                widget4_output = output
-
+            # Store the output in the dictionary for future use
+            widget_contents[widget_select] = output
 
 if __name__ == "__main__":
     app()
