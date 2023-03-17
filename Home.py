@@ -16,16 +16,60 @@ if "widget_outputs" not in st.session_state:
     }
 
 def generate_pdf(sections):
+    # Define the PDF template with placeholders for widget outputs
+    template = """
+    <style>
+    .page {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12pt;
+        line-height: 1.5;
+        margin: 50px;
+    }
+    .title {
+        font-size: 18pt;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    .subtitle {
+        font-size: 14pt;
+        font-weight: bold;
+        margin-top: 30px;
+        margin-bottom: 10px;
+    }
+    .widget-output {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+    </style>
+    <div class="page">
+        <div class="title">QuickBOM.ai</div>
+        <div class="subtitle">Widget 1</div>
+        <div class="widget-output">{widget_1}</div>
+        <div class="subtitle">Widget 2</div>
+        <div class="widget-output">{widget_2}</div>
+        <div class="subtitle">Widget 3</div>
+        <div class="widget-output">{widget_3}</div>
+        <div class="subtitle">Widget 4</div>
+        <div class="widget-output">{widget_4}</div>
+    </div>
+    """
+
+    # Replace the placeholders with the widget outputs
+    template = template.format(
+        widget_1=sections[0],
+        widget_2=sections[1],
+        widget_3=sections[2],
+        widget_4=sections[3]
+    )
+
     # Create a new PDF document
     doc = fitz.open()
 
-    # Add a new page for each section
-    for section in sections:
-        page = doc.new_page()
+    # Add a new page for the template
+    page = doc.new_page()
 
-        # Draw the section text on the page
-        p = fitz.Point(50, 72)
-        page.insert_text(p, section)
+    # Draw the template HTML on the page
+    html = page.get_pixmap_alpha().add_html(template)
 
     # Save the document to a buffer
     buffer = io.BytesIO()
@@ -38,6 +82,7 @@ def generate_pdf(sections):
     buffer.seek(0)
 
     return buffer
+
 
 
 
