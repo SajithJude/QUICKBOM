@@ -64,7 +64,7 @@ def app():
     col1, col2 = st.columns(2)
 
     
-    text = col1.text_area("Write something")
+    # text = col1.text_area("Write something")
 
     # Add a button to generate the PDF file
     if col1.button("Generate PDF"):
