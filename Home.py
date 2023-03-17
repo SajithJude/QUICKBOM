@@ -66,19 +66,11 @@ def app():
 
 
     # Generate text and display in the selected widget
-# Generate text and display in the selected widget
     if submit:
         with st.spinner('Generating...'):
             output = generate_text(query)
-            
-            # Write the output to all widgets except the selected one
-            for key, expander in expanders.items():
-                if key != widget_select:
-                    expander.write("") # Clear the widget
-                else:
-                    expander.write(output)
-                    
-            # Store the output in a variable for future use
+
+            # Update the selected widget with the output
             if widget_select == "Widget 1":
                 widget1_output = output
             elif widget_select == "Widget 2":
@@ -88,8 +80,11 @@ def app():
             elif widget_select == "Widget 4":
                 widget4_output = output
 
+    widget1.write(widget1_output)
+    widget2.write(widget2_output)
+    widget3.write(widget3_output)
+    widget4.write(widget4_output)
 
-    
     # Add a button to generate the PDF file
     if st.button("Generate PDF"):
         # Generate the PDF file
