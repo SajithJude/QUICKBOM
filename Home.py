@@ -80,7 +80,7 @@ def app():
         )
 
 
-    query = st.sidebar.text_area("Ask Something")
+    query = st.sidebar.text_area("Ask Something",key="query")
     submit = st.sidebar.button("Submit")
     if submit:
         with st.spinner('Generating...'):
