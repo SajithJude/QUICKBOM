@@ -6,6 +6,14 @@ import os
 
 openai.api_key = os.getenv("API_KEY")
 
+# Initialize session state
+if "widget_outputs" not in st.session_state:
+    st.session_state.widget_outputs = {
+        "Widget 1": "",
+        "Widget 2": "",
+        "Widget 3": "",
+        "Widget 4": "",
+    }
 
 def generate_pdf(text):
     # Create a new PDF document
@@ -54,12 +62,6 @@ def app():
     widget3 = st.expander("Widget 3")
     widget4 = st.expander("Widget 4")
 
-    # Initialize the output variables for each widget
-    widget1_output = ""
-    widget2_output = ""
-    widget3_output = ""
-    widget4_output = ""
-
     # Define the query text area and submit button
     query = st.sidebar.text_area("Ask Something", key="query")
     submit = st.sidebar.button("Submit")
@@ -72,21 +74,14 @@ def app():
         with st.spinner('Generating...'):
             output = generate_text(query)
 
-            # Update the output variables for the selected widget
-            if widget_select == "Widget 1":
-                widget1_output = output
-            elif widget_select == "Widget 2":
-                widget2_output = output
-            elif widget_select == "Widget 3":
-                widget3_output = output
-            elif widget_select == "Widget 4":
-                widget4_output = output
+            # Update the selected widget output in session state
+            st.session_state.widget_outputs[widget_select] = output
 
-    # Write the output for each widget
-    widget1.write(widget1_output)
-    widget2.write(widget2_output)
-    widget3.write(widget3_output)
-    widget4.write(widget4_output)
+            # Update all the widget outputs
+            widget1.write(st.session_state.widget_outputs["Widget 1"])
+            widget2.write(st.session_state.widget_outputs["Widget 2"])
+            widget3.write(st.session_state.widget_outputs["Widget 3"])
+            widget4.write(st.session_state.widget_outputs["Widget 4"])
 
     # Add a button to generate the PDF file
     if st.button("Generate PDF"):
@@ -101,7 +96,6 @@ def app():
             file_name="example.pdf",
             mime="application/pdf"
         )
-
 
 if __name__ == "__main__":
     app()
