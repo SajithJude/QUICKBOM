@@ -45,8 +45,6 @@ def generate_text(input):
 
 
 # Define the expandable widgets
-
-
 def app():
     # Set the app title
     st.title("QuickBOM.ai")
@@ -56,31 +54,25 @@ def app():
     widget3 = st.expander("Widget 3")
     widget4 = st.expander("Widget 4")
 
-    widget4_output = ""
-    widget3_output = ""
-    widget2_output = ""
+    # Initialize the output variables for each widget
     widget1_output = ""
-
-    widget1.write(widget1_output)
-    widget2.write(widget2_output)
-    widget3.write(widget3_output)
-    widget4.write(widget4_output)
-
-
+    widget2_output = ""
+    widget3_output = ""
+    widget4_output = ""
 
     # Define the query text area and submit button
     query = st.sidebar.text_area("Ask Something", key="query")
     submit = st.sidebar.button("Submit")
+
     # Define the widget selection drop-down
     widget_select = st.sidebar.selectbox("Select a widget", ["Widget 1", "Widget 2", "Widget 3", "Widget 4"])
-
 
     # Generate text and display in the selected widget
     if submit:
         with st.spinner('Generating...'):
             output = generate_text(query)
 
-            # Update the selected widget with the output
+            # Update the output variables for the selected widget
             if widget_select == "Widget 1":
                 widget1_output = output
             elif widget_select == "Widget 2":
@@ -90,10 +82,11 @@ def app():
             elif widget_select == "Widget 4":
                 widget4_output = output
 
-            widget1.write(widget1_output)
-            widget2.write(widget2_output)
-            widget3.write(widget3_output)
-            widget4.write(widget4_output)
+    # Write the output for each widget
+    widget1.write(widget1_output)
+    widget2.write(widget2_output)
+    widget3.write(widget3_output)
+    widget4.write(widget4_output)
 
     # Add a button to generate the PDF file
     if st.button("Generate PDF"):
@@ -108,6 +101,7 @@ def app():
             file_name="example.pdf",
             mime="application/pdf"
         )
+
 
 if __name__ == "__main__":
     app()
