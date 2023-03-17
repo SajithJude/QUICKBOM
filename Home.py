@@ -59,6 +59,11 @@ def app():
     widget3 = st.expander("Widget 3")
     widget4 = st.expander("Widget 4")
 
+    widget1.write(widget1_output)
+    widget2.write(widget2_output)
+    widget3.write(widget3_output)
+    widget4.write(widget4_output)
+
 
 
     # Define the query text area and submit button
