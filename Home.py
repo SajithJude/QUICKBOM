@@ -28,20 +28,21 @@ def generate_pdf(sections):
 
     # Add a new page for each section
     for section in sections:
+
         if ":" in section:
+
             heading, text = section.split(":", 1)
         else:
+            
             heading, text = section, ""
-    # rest of the code
-
         # Create a new page
-    page = doc.new_page()
+        page = doc.new_page()
 
-    # Draw the section heading and text on the page
-    p1 = fitz.Point(50, 100)
-    p2 = fitz.Point(50, 150)
-    page.insert_text(p1, heading, fontname="Arial", fontsize=20)
-    page.insert_text(p2, text, fontname="Arial", fontsize=12)
+        # Draw the section heading and text on the page
+        p1 = fitz.Point(50, 100)
+        p2 = fitz.Point(50, 150)
+        page.insert_text(p1, heading, fontname="Arial", fontsize=20, fontcolor=(0, 0, 0))
+        page.insert_text(p2, text, fontname="Arial", fontsize=12, fontcolor=(0, 0, 0))
 
     # Save the document to a buffer
     buffer = io.BytesIO()
