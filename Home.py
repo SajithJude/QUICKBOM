@@ -96,8 +96,7 @@ def app():
     # Add a button to generate the PDF file
     if st.button("Generate PDF"):
         # Generate the PDF file
-        text = "Hello, World!"
-        buffer = generate_pdf(text)
+        buffer = generate_pdf(widget_outputs)
 
         # Download the PDF file
         st.download_button(
