@@ -16,67 +16,51 @@ if "widget_outputs" not in st.session_state:
     }
 
 def generate_pdf(sections):
-    # Define the PDF template with placeholders for widget outputs
+    # Define the PDF template
     template = """
-    <style>
-    .page {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 12pt;
-        line-height: 1.5;
-        margin: 50px;
-    }
-    .title {
-        font-size: 18pt;
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
-    .subtitle {
-        font-size: 14pt;
-        font-weight: bold;
-        margin-top: 30px;
-        margin-bottom: 10px;
-    }
-    .widget-output {
-        margin-top: 10px;
-        margin-bottom: 20px;
-    }
-    </style>
-    <div class="page">
-        <div class="title">QuickBOM.ai</div>
-        <div class="subtitle">Widget 1</div>
-        <div class="widget-output">{widget_1}</div>
-        <div class="subtitle">Widget 2</div>
-        <div class="widget-output">{widget_2}</div>
-        <div class="subtitle">Widget 3</div>
-        <div class="widget-output">{widget_3}</div>
-        <div class="subtitle">Widget 4</div>
-        <div class="widget-output">{widget_4}</div>
-    </div>
+    <html>
+        <head>
+            <style>
+                body {{
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 12pt;
+                }}
+                .section {{
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+                }}
+                .widget {{
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                    padding: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                }}
+                h2 {{
+                    font-size: 16pt;
+                }}
+            </style>
+        </head>
+        <body>
+            {}
+        </body>
+    </html>
     """
 
-    # Replace the placeholders with the widget outputs
-    template = template.format(
-        widget_1=sections[0],
-        widget_2=sections[1],
-        widget_3=sections[2],
-        widget_4=sections[3]
-    )
+    # Generate the HTML content for each section
+    section_html = ""
+    for i, section in enumerate(sections):
+        section_html += f'<div class="section"><h2>Widget {i+1}</h2>'
+        for j, widget in enumerate(section.split("\n\n")):
+            section_html += f'<div class="widget"><p>{widget}</p></div>'
+        section_html += '</div>'
 
-    # Create a new PDF document
-    doc = fitz.open()
+    # Format the HTML content with the template
+    html = template.format(section_html)
 
-    # Add a new page for the template
-    page = doc.new_page()
-
-    # Draw the template HTML on the page
-    html = page.get_pixmap_alpha().add_html(template)
-
-    # Save the document to a buffer
+    # Convert the HTML content to a PDF
     buffer = io.BytesIO()
-    doc.save(buffer)
-
-    # Close the document
-    doc.close()
+    weasyprint.HTML(string=html).write_pdf(buffer)
 
     # Set the buffer position to the beginning
     buffer.seek(0)
