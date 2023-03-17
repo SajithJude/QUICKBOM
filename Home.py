@@ -1,6 +1,18 @@
 import streamlit as st
 import io
 import fitz
+import openai
+
+openai.api_key =  os.getenv("API_KEY")
+
+
+def simulate_typing(text):
+    for char in text:
+        st.write(char, end='', flush=True)
+        time.sleep(0.1)
+    st.write('')
+
+
 
 def generate_pdf(word):
     # Create a new PDF document
@@ -26,14 +38,33 @@ def generate_pdf(word):
 
     return buffer
 
+
+def Generate_text(input):
+    response = openai.Completion.create(
+            model="text-davinci-003",
+            prompt=input,
+            temperature=0.56,
+            max_tokens=2066,
+            top_p=1,
+            frequency_penalty=0.35,
+            presence_penalty=0
+            
+            )
+    return response.choices[0].text
+
+
 def app():
     # Set the app title
-    st.title("PDF Generator")
+    st.title("QuickBOM.ai")
+
+
+    col1, col2 = st.columns(2)
+
     
-    text = st.text_area("Write something")
+    text = col1.text_area("Write something")
 
     # Add a button to generate the PDF file
-    if st.button("Generate PDF"):
+    if col1.button("Generate PDF"):
         # Generate the PDF file
         buffer = generate_pdf(text)
 
