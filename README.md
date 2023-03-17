@@ -1,0 +1,2 @@
+# QUICKBOM
+.ai
