@@ -57,7 +57,7 @@ def app():
     }
 
     # Define the widget selection drop-down
-    widget_select = st.sidebar.selectbox("Select a widget", list(expanders.keys()))
+    widget_select = st.sidebar.multiselect("Select a widget", list(expanders.keys()))
 
     # Add a button to generate the PDF file
     if st.button("Generate PDF"):
