@@ -45,7 +45,10 @@ def generate_text(input):
 
 
 # Define the expandable widgets
-
+widget4_output = ""
+widget3_output = ""
+widget2_output = ""
+widget1_output = ""
 
 def app():
     # Set the app title
