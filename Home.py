@@ -28,8 +28,11 @@ def generate_pdf(sections):
 
     # Add a new page for each section
     for section in sections:
-        # Split the section into the heading and text
-        heading, text = section.split(":", 1)
+        if ":" in section:
+            heading, text = section.split(":", 1)
+        else:
+            heading, text = section, ""
+    # rest of the code
 
         # Create a new page
         page = doc.new_page()
