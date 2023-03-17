@@ -16,57 +16,41 @@ if "widget_outputs" not in st.session_state:
     }
 
 def generate_pdf(sections):
-    # Define the PDF template
-    template = """
-    <html>
-        <head>
-            <style>
-                body {{
-                    font-family: Arial, Helvetica, sans-serif;
-                    font-size: 12pt;
-                }}
-                .section {{
-                    margin-top: 20px;
-                    margin-bottom: 20px;
-                }}
-                .widget {{
-                    margin-top: 10px;
-                    margin-bottom: 10px;
-                    padding: 10px;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                }}
-                h2 {{
-                    font-size: 16pt;
-                }}
-            </style>
-        </head>
-        <body>
-            {}
-        </body>
-    </html>
-    """
+    # Create a new PDF document
+    doc = fitz.open()
 
-    # Generate the HTML content for each section
-    section_html = ""
-    for i, section in enumerate(sections):
-        section_html += f'<div class="section"><h2>Widget {i+1}</h2>'
-        for j, widget in enumerate(section.split("\n\n")):
-            section_html += f'<div class="widget"><p>{widget}</p></div>'
-        section_html += '</div>'
+    # Define the style for the section headings and text
+    style_heading = "<style>\nh1 {font-family: Arial, sans-serif; font-size: 20pt; font-weight: bold; color: #000000;}\n</style>"
+    style_text = "<style>\np {font-family: Arial, sans-serif; font-size: 12pt; color: #000000;}\n</style>"
 
-    # Format the HTML content with the template
-    html = template.format(section_html)
+    # Define the page template for each section
+    template = style_heading + style_text + "<h1>{}</h1><p>{}</p>"
 
-    # Convert the HTML content to a PDF
+    # Add a new page for each section
+    for section in sections:
+        # Split the section into the heading and text
+        heading, text = section.split(":", 1)
+
+        # Create a new page
+        page = doc.new_page()
+
+        # Draw the section heading and text on the page
+        p1 = fitz.Point(50, 100)
+        p2 = fitz.Point(50, 150)
+        page.insert_text(p1, heading, fontname="Arial", fontsize=20, fontcolor=(0, 0, 0))
+        page.insert_text(p2, text, fontname="Arial", fontsize=12, fontcolor=(0, 0, 0))
+
+    # Save the document to a buffer
     buffer = io.BytesIO()
-    weasyprint.HTML(string=html).write_pdf(buffer)
+    doc.save(buffer)
+
+    # Close the document
+    doc.close()
 
     # Set the buffer position to the beginning
     buffer.seek(0)
 
     return buffer
-
 
 
 
