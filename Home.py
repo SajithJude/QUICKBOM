@@ -48,11 +48,16 @@ def app():
     # Set the app title
     st.title("QuickBOM.ai")
 
-    # Add expandable widgets to display generated text
-    expanders = {}
-    for i in range(4):
-        with st.beta_expander(f"Output {i+1}"):
-            expanders[i] = st.empty()
+    # Define the expandable widgets
+    expanders = {
+        "Widget 1": st.expander("Widget 1"),
+        "Widget 2": st.expander("Widget 2"),
+        "Widget 3": st.expander("Widget 3"),
+        "Widget 4": st.expander("Widget 4")
+    }
+
+    # Define the widget selection drop-down
+    widget_select = st.sidebar.selectbox("Select a widget", list(expanders.keys()))
 
     # Add a button to generate the PDF file
     if st.button("Generate PDF"):
@@ -68,17 +73,26 @@ def app():
             mime="application/pdf"
         )
 
-    # Add a sidebar to generate text
+    # Define the query text area and submit button
     query = st.sidebar.text_area("Ask Something", key="query")
     submit = st.sidebar.button("Submit")
+
+    # Generate text and display in the selected widget
     if submit:
         with st.spinner('Generating...'):
-            # Generate text and display it in the selected expander
-            for i in range(4):
-                if expanders[i].button(f"Select Region {i+1}"):
-                    output = generate_text(query)
-                    st.write(output)
-                
+            output = generate_text(query)
+            expanders[widget_select].write(output)
+
+            # Store the output in a variable for future use
+            if widget_select == "Widget 1":
+                widget1_output = output
+            elif widget_select == "Widget 2":
+                widget2_output = output
+            elif widget_select == "Widget 3":
+                widget3_output = output
+            elif widget_select == "Widget 4":
+                widget4_output = output
+
 
 if __name__ == "__main__":
     app()
