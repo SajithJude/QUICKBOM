@@ -56,7 +56,6 @@ def app():
     st.title("QuickBOM.ai")
 
     # Define the widget selection drop-down
-    widget_select = st.sidebar.selectbox("Select a widget", ["Widget 1", "Widget 2", "Widget 3", "Widget 4"])
 
     # Add a button to generate the PDF file
     if st.button("Generate PDF"):
@@ -94,3 +93,5 @@ def app():
 
 if __name__ == "__main__":
     app()
+    widget_select = st.sidebar.selectbox("Select a widget", ["Widget 1", "Widget 2", "Widget 3", "Widget 4"])
+
