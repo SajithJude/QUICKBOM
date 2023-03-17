@@ -57,26 +57,13 @@ def app():
     widget4 = st.expander("Widget 4")
 
 
-    # Define the widget selection drop-down
-    widget_select = st.sidebar.selectbox("Select a widget", ["Widget 1", "Widget 2", "Widget 3", "Widget 4"])
-
-    # Add a button to generate the PDF file
-    if st.button("Generate PDF"):
-        # Generate the PDF file
-        text = "Hello, World!"
-        buffer = generate_pdf(text)
-
-        # Download the PDF file
-        st.download_button(
-            label="Download PDF",
-            data=buffer,
-            file_name="example.pdf",
-            mime="application/pdf"
-        )
 
     # Define the query text area and submit button
     query = st.sidebar.text_area("Ask Something", key="query")
     submit = st.sidebar.button("Submit")
+    # Define the widget selection drop-down
+    widget_select = st.sidebar.selectbox("Select a widget", ["Widget 1", "Widget 2", "Widget 3", "Widget 4"])
+
 
     # Generate text and display in the selected widget
     if submit:
@@ -93,6 +80,20 @@ def app():
             elif widget_select == "Widget 4":
                 widget4.write(output)
 
+    
+    # Add a button to generate the PDF file
+    if st.button("Generate PDF"):
+        # Generate the PDF file
+        text = "Hello, World!"
+        buffer = generate_pdf(text)
+
+        # Download the PDF file
+        st.download_button(
+            label="Download PDF",
+            data=buffer,
+            file_name="example.pdf",
+            mime="application/pdf"
+        )
 
 if __name__ == "__main__":
     app()
