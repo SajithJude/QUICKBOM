@@ -2,22 +2,12 @@ import streamlit as st
 import io
 import fitz
 import openai
-import time
 import os
 
-openai.api_key =  os.getenv("API_KEY")
+openai.api_key = os.getenv("API_KEY")
 
 
-def simulate_typing_in_textarea(text_input):
-    for char in text_input:
-        st.text_area("Type here", value=text_input[:text_input.index(char)] + char, height=200, key=char)
-        time.sleep(0.1)
-    st.text_area("Type here", value=text_input, height=200)
-
-
-
-
-def generate_pdf(word):
+def generate_pdf(text):
     # Create a new PDF document
     doc = fitz.open()
 
@@ -25,9 +15,8 @@ def generate_pdf(word):
     page = doc.new_page()
     p = fitz.Point(50, 72)
 
-   
     # Draw some text on the page
-    page.insert_text(p, word)
+    page.insert_text(p, text)
 
     # Save the document to a buffer
     buffer = io.BytesIO()
@@ -42,17 +31,16 @@ def generate_pdf(word):
     return buffer
 
 
-def Generate_text(input):
+def generate_text(input):
     response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=input,
-            temperature=0.56,
-            max_tokens=2066,
-            top_p=1,
-            frequency_penalty=0.35,
-            presence_penalty=0
-            
-            )
+        model="text-davinci-003",
+        prompt=input,
+        temperature=0.56,
+        max_tokens=2066,
+        top_p=1,
+        frequency_penalty=0.35,
+        presence_penalty=0
+    )
     return response.choices[0].text
 
 
@@ -60,15 +48,16 @@ def app():
     # Set the app title
     st.title("QuickBOM.ai")
 
-
-    col1, col2 = st.columns(2)
-
-    
-    # text = col1.text_area("Write something")
+    # Add expandable widgets to display generated text
+    expanders = {}
+    for i in range(4):
+        with st.beta_expander(f"Output {i+1}"):
+            expanders[i] = st.empty()
 
     # Add a button to generate the PDF file
-    if col1.button("Generate PDF"):
+    if st.button("Generate PDF"):
         # Generate the PDF file
+        text = "Hello, World!"
         buffer = generate_pdf(text)
 
         # Download the PDF file
@@ -79,16 +68,17 @@ def app():
             mime="application/pdf"
         )
 
-
-    query = st.sidebar.text_area("Ask Something",key="query")
+    # Add a sidebar to generate text
+    query = st.sidebar.text_area("Ask Something", key="query")
     submit = st.sidebar.button("Submit")
     if submit:
         with st.spinner('Generating...'):
-            output = Generate_text(query)
-            st.write(output)
-            # simulate_typing_in_textarea(outpsut)
-
-
+            # Generate text and display it in the selected expander
+            for i in range(4):
+                if expanders[i].button(f"Select Region {i+1}"):
+                    output = generate_text(query)
+                    expanders[i].write(output)
+                    break
 
 if __name__ == "__main__":
     app()
