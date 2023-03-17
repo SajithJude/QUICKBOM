@@ -6,6 +6,7 @@ import os
 
 openai.api_key = os.getenv("API_KEY")
 
+
 def generate_pdf(text):
     # Create a new PDF document
     doc = fitz.open()
@@ -29,6 +30,7 @@ def generate_pdf(text):
 
     return buffer
 
+
 def generate_text(input):
     response = openai.Completion.create(
         model="text-davinci-003",
@@ -41,32 +43,20 @@ def generate_text(input):
     )
     return response.choices[0].text
 
+
+# Define the expandable widgets
+widget1 = st.expander("Widget 1")
+widget2 = st.expander("Widget 2")
+widget3 = st.expander("Widget 3")
+widget4 = st.expander("Widget 4")
+
+
 def app():
     # Set the app title
     st.title("QuickBOM.ai")
 
-    # Define the expandable widgets
-    expanders = {
-        "Widget 1": st.expander("Widget 1"),
-        "Widget 2": st.expander("Widget 2"),
-        "Widget 3": st.expander("Widget 3"),
-        "Widget 4": st.expander("Widget 4")
-    }
-
     # Define the widget selection drop-down
-    widget_select = st.sidebar.selectbox("Select a widget", list(expanders.keys()))
-
-    # Define a dictionary to store the widget contents
-    widget_contents = {
-        "Widget 1": None,
-        "Widget 2": None,
-        "Widget 3": None,
-        "Widget 4": None
-    }
-
-    # Load the contents of the selected widget
-    if widget_select in widget_contents and widget_contents[widget_select] is not None:
-        expanders[widget_select].write(widget_contents[widget_select])
+    widget_select = st.sidebar.selectbox("Select a widget", ["Widget 1", "Widget 2", "Widget 3", "Widget 4"])
 
     # Add a button to generate the PDF file
     if st.button("Generate PDF"):
@@ -90,10 +80,17 @@ def app():
     if submit:
         with st.spinner('Generating...'):
             output = generate_text(query)
-            expanders[widget_select].write(output)
 
-            # Store the output in the dictionary for future use
-            widget_contents[widget_select] = output
+            # Update the selected widget with the output
+            if widget_select == "Widget 1":
+                widget1.write(output)
+            elif widget_select == "Widget 2":
+                widget2.write(output)
+            elif widget_select == "Widget 3":
+                widget3.write(output)
+            elif widget_select == "Widget 4":
+                widget4.write(output)
+
 
 if __name__ == "__main__":
     app()
