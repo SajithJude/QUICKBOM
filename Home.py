@@ -85,7 +85,7 @@ def app():
     if submit:
         with st.spinner('Generating...'):
             output = Generate_text(query)
-            st.Write(output)
+            st.write(output)
             # simulate_typing_in_textarea(outpsut)
 
 
