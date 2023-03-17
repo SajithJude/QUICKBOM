@@ -45,15 +45,17 @@ def generate_text(input):
 
 
 # Define the expandable widgets
-widget1 = st.expander("Widget 1")
-widget2 = st.expander("Widget 2")
-widget3 = st.expander("Widget 3")
-widget4 = st.expander("Widget 4")
 
 
 def app():
     # Set the app title
     st.title("QuickBOM.ai")
+
+    widget1 = st.expander("Widget 1")
+    widget2 = st.expander("Widget 2")
+    widget3 = st.expander("Widget 3")
+    widget4 = st.expander("Widget 4")
+
 
     # Define the widget selection drop-down
     widget_select = st.sidebar.selectbox("Select a widget", ["Widget 1", "Widget 2", "Widget 3", "Widget 4"])
