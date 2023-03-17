@@ -45,10 +45,7 @@ def generate_text(input):
 
 
 # Define the expandable widgets
-widget4_output = ""
-widget3_output = ""
-widget2_output = ""
-widget1_output = ""
+
 
 def app():
     # Set the app title
@@ -58,6 +55,11 @@ def app():
     widget2 = st.expander("Widget 2")
     widget3 = st.expander("Widget 3")
     widget4 = st.expander("Widget 4")
+
+    widget4_output = ""
+    widget3_output = ""
+    widget2_output = ""
+    widget1_output = ""
 
     widget1.write(widget1_output)
     widget2.write(widget2_output)
