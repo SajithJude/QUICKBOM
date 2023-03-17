@@ -3,6 +3,7 @@ import io
 import fitz
 import openai
 import time
+import os
 
 openai.api_key =  os.getenv("API_KEY")
 
