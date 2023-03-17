@@ -2,15 +2,17 @@ import streamlit as st
 import io
 import fitz
 import openai
+import time
 
 openai.api_key =  os.getenv("API_KEY")
 
 
-def simulate_typing(text):
-    for char in text:
-        st.write(char, end='', flush=True)
+def simulate_typing_in_textarea(text_input):
+    for char in text_input:
+        st.text_area("Type here", value=text_input[:text_input.index(char)] + char, height=200)
         time.sleep(0.1)
-    st.write('')
+    st.text_area("Type here", value=text_input, height=200)
+
 
 
 
@@ -75,6 +77,15 @@ def app():
             file_name="example.pdf",
             mime="application/pdf"
         )
+
+
+    query = st.sidebar.text_area("Ask Something")
+    submit = st.sidebar.button("Submit")
+    if submit:
+        with st.spinner('Generating...'):
+            output = Generate_text(query)
+            simulate_typing_in_textarea(output)
+
 
 
 if __name__ == "__main__":
