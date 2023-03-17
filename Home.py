@@ -12,7 +12,7 @@ def simulate_typing_in_textarea(text_input):
     for char in text_input:
         st.text_area("Type here", value=text_input[:text_input.index(char)] + char, height=200, key="outs")
         time.sleep(0.1)
-    # st.text_area("hmmmm", value=text_input, height=200)
+    st.text_area("Type here", value=text_input, height=200)
 
 
 
