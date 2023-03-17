@@ -77,7 +77,7 @@ def app():
             for i in range(4):
                 if expanders[i].button(f"Select Region {i+1}"):
                     output = generate_text(query)
-                    expanders[i].write(output)
+                    st.write(output)
                 
 
 if __name__ == "__main__":
