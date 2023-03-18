@@ -31,8 +31,8 @@ def generate_pdf(sections):
     # Draw the section heading and text on the page
     p1 = fitz.Point(50, 100)
     p2 = fitz.Point(50, 150)
-    page.insert_text(p1, heading, fontname="Arial", fontsize=20)
-    page.insert_text(p2, text, fontname="Arial", fontsize=12)
+    page.insert_text(p1, heading)
+    page.insert_text(p2, text)
 
     # Save the document to a buffer
     buffer = io.BytesIO()
