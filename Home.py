@@ -5,6 +5,16 @@ import openai
 import os
 
 openai.api_key = os.getenv("API_KEY")
+st.markdown(
+    f'''
+        <style>
+            .sidebar .sidebar-content {{
+                width: 575px;
+            }}
+        </style>
+    ''',
+    unsafe_allow_html=True
+)
 
 # Initialize session state
 if "widget_outputs" not in st.session_state:
