@@ -19,20 +19,30 @@ def generate_pdf(sections):
     # Create a new PDF document
     doc = fitz.open()
 
+    # Define the style for the section headings and text
+    style_heading = "<style>\nh1 {font-family: Arial, sans-serif; font-size: 20pt; font-weight: bold; color: #000000;}\n</style>"
+    style_text = "<style>\np {font-family: Arial, sans-serif; font-size: 12pt; color: #000000;}\n</style>"
+
+    # Define the page template for each section
+    template = style_heading + style_text + "<h1>{}</h1><p>{}</p>"
+
+    # Add a new page for each section
     for section in sections:
+
         if ":" in section:
 
             heading, text = section.split(":", 1)
-        else: 
+        else:
+            
             heading, text = section, ""
         # Create a new page
-    page = doc.new_page()
+        page = doc.new_page()
 
-    # Draw the section heading and text on the page
-    p1 = fitz.Point(50, 100)
-    p2 = fitz.Point(50, 150)
-    page.insert_text(p1, heading)
-    page.insert_text(p2, text)
+        # Draw the section heading and text on the page
+        p1 = fitz.Point(50, 100)
+        p2 = fitz.Point(50, 150)
+        page.insert_text(p1, heading)
+        page.insert_text(p2, text)
 
     # Save the document to a buffer
     buffer = io.BytesIO()
